@@ -18,12 +18,12 @@ export const BrowserApp: React.FC = () => {
     }
   }, [settings.hasSeenConsentPopup]);
 
-  // Create initial tab if none exist
+  // Create initial tab with homepage, or force existing tabs to homepage if they have old URLs
   useEffect(() => {
     if (tabs.length === 0) {
       addTab(HOMEPAGE_URL);
     }
-  }, []);
+  }, [tabs.length, addTab]);
 
   return (
     <div className="h-screen flex flex-col bg-background overflow-hidden">

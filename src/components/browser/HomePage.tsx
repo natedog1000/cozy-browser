@@ -86,7 +86,7 @@ export const HomePage: React.FC = () => {
         </div>
 
         {/* Platform tiles grid */}
-        <div className="grid grid-cols-3 gap-6 max-w-4xl w-full justify-items-center">
+        <div className="grid grid-cols-3 gap-8 max-w-4xl w-full justify-items-center">
           {platforms.map((platform) => (
             <button
               key={platform.name}

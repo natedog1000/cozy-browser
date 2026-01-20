@@ -44,11 +44,12 @@ export const useBrowserStore = create<BrowserState>()(
 
       addTab: (url = DEFAULT_URL) => {
         const id = generateId();
+        const isHomePage = url === HOMEPAGE_URL || url.startsWith('kisscam://');
         const newTab: Tab = {
           id,
           url,
-          title: 'New Tab',
-          isLoading: true,
+          title: isHomePage ? 'KissCam Home' : 'New Tab',
+          isLoading: !isHomePage, // Don't show loading for homepage
         };
         
         set((state) => ({

@@ -91,7 +91,7 @@ export const HomePage: React.FC = () => {
             <button
               key={platform.name}
               onClick={() => handleTileClick(platform.url, platform.name)}
-              className="group flex items-center justify-center p-6 rounded-3xl hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg"
+              className="group flex items-center justify-center p-6 rounded-3xl bg-white/70 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg"
             >
               <img 
                 src={platform.logo} 
@@ -106,12 +106,12 @@ export const HomePage: React.FC = () => {
         <div className="flex justify-center w-full mt-2">
           <button
             onClick={() => handleTileClick(twitchPlatform.url, twitchPlatform.name)}
-            className="group flex items-center justify-center p-6 rounded-3xl hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg"
+            className="group flex items-center justify-center p-6 rounded-3xl bg-white/70 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg"
           >
             <img 
               src={twitchPlatform.logo} 
               alt={twitchPlatform.name}
-              className="max-w-full h-auto max-h-28 object-contain group-hover:scale-110 transition-transform duration-300"
+              className="max-w-full h-auto max-h-36 object-contain group-hover:scale-110 transition-transform duration-300"
             />
           </button>
         </div>

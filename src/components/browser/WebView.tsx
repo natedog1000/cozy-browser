@@ -8,15 +8,17 @@ export const WebView: React.FC = () => {
   const activeTab = tabs.find((tab) => tab.id === activeTabId);
   const [error, setError] = useState<string | null>(null);
 
-  // Check if we're on the homepage
-  const isHomePage = activeTab?.url === HOMEPAGE_URL;
+  // Check if we're on the homepage - handle both with and without protocol
+  const isHomePage = activeTab?.url === HOMEPAGE_URL || 
+                     activeTab?.url === 'kisscam://home' ||
+                     activeTab?.url?.startsWith('kisscam://');
 
   useEffect(() => {
     if (activeTab?.isLoading) {
       setError(null);
       
-      // Handle homepage specially - no loading simulation needed
-      if (activeTab.url === HOMEPAGE_URL) {
+      // Handle homepage specially - immediately mark as loaded
+      if (activeTab.url === HOMEPAGE_URL || activeTab.url?.startsWith('kisscam://')) {
         updateTab(activeTab.id, { 
           isLoading: false, 
           title: 'KissCam Home' 
@@ -50,8 +52,8 @@ export const WebView: React.FC = () => {
     return <HomePage />;
   }
 
-  // Show homepage for internal URL
-  if (isHomePage && !activeTab.isLoading) {
+  // ALWAYS show homepage for internal kisscam:// URLs (regardless of loading state)
+  if (isHomePage) {
     return <HomePage />;
   }
 

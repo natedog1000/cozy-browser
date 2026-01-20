@@ -2,84 +2,96 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 220 16% 96%;
-    --foreground: 224 71% 4%;
+    --background: 350 60% 97%;
+    --foreground: 340 30% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 224 71% 4%;
+    --card-foreground: 340 30% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71% 4%;
+    --popover-foreground: 340 30% 15%;
 
-    --primary: 217 91% 60%;
+    --primary: 340 70% 65%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 90%;
-    --secondary-foreground: 224 71% 4%;
+    --secondary: 350 40% 94%;
+    --secondary-foreground: 340 30% 15%;
 
-    --muted: 220 14% 92%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 350 30% 94%;
+    --muted-foreground: 340 15% 45%;
 
-    --accent: 217 91% 60%;
+    --accent: 340 70% 70%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 87%;
-    --input: 220 13% 87%;
-    --ring: 217 91% 60%;
+    --border: 350 30% 88%;
+    --input: 350 30% 90%;
+    --ring: 340 70% 65%;
 
-    --radius: 0.625rem;
+    --radius: 0.75rem;
 
     /* Browser-specific tokens */
     --toolbar: 0 0% 100%;
-    --toolbar-foreground: 224 71% 4%;
-    --tab-active: 217 91% 60%;
-    --tab-inactive: 220 14% 92%;
-    --webview-bg: 0 0% 100%;
-    --url-bar: 220 14% 96%;
+    --toolbar-foreground: 340 30% 15%;
+    --tab-active: 340 70% 70%;
+    --tab-inactive: 350 40% 95%;
+    --webview-bg: 350 50% 98%;
+    --url-bar: 350 40% 96%;
+
+    /* Homepage-specific tokens */
+    --homepage-overlay: 350 60% 95%;
+    --homepage-tile-bg: 0 0% 100%;
+    --homepage-tile-text: 340 40% 25%;
+    --homepage-tagline: 340 30% 50%;
   }
 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 210 20% 98%;
+    --background: 340 25% 8%;
+    --foreground: 350 20% 95%;
 
-    --card: 224 71% 7%;
-    --card-foreground: 210 20% 98%;
+    --card: 340 25% 12%;
+    --card-foreground: 350 20% 95%;
 
-    --popover: 224 71% 7%;
-    --popover-foreground: 210 20% 98%;
+    --popover: 340 25% 12%;
+    --popover-foreground: 350 20% 95%;
 
-    --primary: 217 91% 60%;
+    --primary: 340 70% 60%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 215 28% 17%;
-    --secondary-foreground: 210 20% 98%;
+    --secondary: 340 25% 18%;
+    --secondary-foreground: 350 20% 95%;
 
-    --muted: 215 28% 17%;
-    --muted-foreground: 217 10% 64%;
+    --muted: 340 25% 18%;
+    --muted-foreground: 340 15% 55%;
 
-    --accent: 217 91% 60%;
+    --accent: 340 70% 55%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 215 28% 17%;
-    --input: 215 28% 17%;
-    --ring: 217 91% 60%;
+    --border: 340 25% 20%;
+    --input: 340 25% 20%;
+    --ring: 340 70% 60%;
 
-    --toolbar: 224 71% 7%;
-    --toolbar-foreground: 210 20% 98%;
-    --tab-active: 217 91% 60%;
-    --tab-inactive: 215 28% 17%;
-    --webview-bg: 224 71% 4%;
-    --url-bar: 215 28% 17%;
+    --toolbar: 340 25% 10%;
+    --toolbar-foreground: 350 20% 95%;
+    --tab-active: 340 70% 55%;
+    --tab-inactive: 340 25% 16%;
+    --webview-bg: 340 25% 8%;
+    --url-bar: 340 25% 16%;
+
+    /* Homepage-specific tokens (dark) */
+    --homepage-overlay: 340 25% 10%;
+    --homepage-tile-bg: 340 25% 15%;
+    --homepage-tile-text: 350 20% 90%;
+    --homepage-tagline: 340 30% 60%;
   }
 }
 

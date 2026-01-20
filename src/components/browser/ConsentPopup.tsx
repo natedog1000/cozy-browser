@@ -55,7 +55,7 @@ export const ConsentPopup: React.FC<ConsentPopupProps> = ({ onClose }) => {
         {/* Content */}
         <div className="p-6 pt-4">
           <h2 className="text-2xl font-bold text-foreground mb-2">
-            Welcome to Browser
+            Welcome to KissCam ✨
           </h2>
           <p className="text-muted-foreground mb-6">
             Before you start browsing, please review our analytics preferences.

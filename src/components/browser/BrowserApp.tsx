@@ -4,7 +4,7 @@ import { NavigationBar } from './NavigationBar';
 import { WebView } from './WebView';
 import { SettingsModal } from './SettingsModal';
 import { ConsentPopup } from './ConsentPopup';
-import { useBrowserStore } from '@/store/browserStore';
+import { useBrowserStore, HOMEPAGE_URL } from '@/store/browserStore';
 
 export const BrowserApp: React.FC = () => {
   const { tabs, addTab, settings } = useBrowserStore();
@@ -21,7 +21,7 @@ export const BrowserApp: React.FC = () => {
   // Create initial tab if none exist
   useEffect(() => {
     if (tabs.length === 0) {
-      addTab('https://www.google.com');
+      addTab(HOMEPAGE_URL);
     }
   }, []);
 

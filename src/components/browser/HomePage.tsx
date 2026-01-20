@@ -7,6 +7,7 @@ import myfreecamsLogo from '@/assets/myfreecams-logo.png';
 import stripchatLogo from '@/assets/stripchat-logo.png';
 import camsodaLogo from '@/assets/camsoda-logo.png';
 import cam4Logo from '@/assets/cam4-logo.png';
+import twitchLogo from '@/assets/twitch-logo.png';
 import { useBrowserStore } from '@/store/browserStore';
 
 interface PlatformTile {
@@ -45,6 +46,11 @@ const platforms: PlatformTile[] = [
     name: 'Cam4',
     url: 'https://www.cam4.com/login',
     logo: cam4Logo,
+  },
+  {
+    name: 'Twitch',
+    url: 'https://www.twitch.tv',
+    logo: twitchLogo,
   },
 ];
 

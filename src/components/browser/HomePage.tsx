@@ -1,6 +1,6 @@
 import React from 'react';
 import kisscamLogo from '@/assets/kisscam-logo.png';
-import heroBackground from '@/assets/hero-background.jpg';
+import heroBackground from '@/assets/hero-background.png';
 import { useBrowserStore } from '@/store/browserStore';
 
 interface PlatformTile {

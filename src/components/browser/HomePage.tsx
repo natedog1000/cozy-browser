@@ -84,7 +84,7 @@ export const HomePage: React.FC = () => {
             <button
               key={platform.name}
               onClick={() => handleTileClick(platform.url, platform.name)}
-              className="group flex items-center justify-center p-6 rounded-3xl hover:scale-105 transition-all duration-300 bg-white/60 backdrop-blur-sm shadow-[0_8px_32px_rgba(255,255,255,0.5)] hover:shadow-[0_12px_48px_rgba(255,255,255,0.7)] hover:bg-white/80"
+              className="group flex items-center justify-center p-6 rounded-3xl hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg"
             >
               <img 
                 src={platform.logo} 

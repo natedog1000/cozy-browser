@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ArrowRight, RotateCw, Home, Settings } from 'lucide-react';
-import { useBrowserStore } from '@/store/browserStore';
+import { useBrowserStore, HOMEPAGE_URL } from '@/store/browserStore';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { cn } from '@/lib/utils';
 
@@ -73,8 +73,8 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({ onOpenSettings }) 
   const handleHome = () => {
     if (!activeTabId) return;
     trackButtonClick('home');
-    navigateTo(activeTabId, 'https://www.google.com');
-    trackPageVisit('https://www.google.com');
+    navigateTo(activeTabId, HOMEPAGE_URL);
+    setInputUrl(HOMEPAGE_URL);
   };
 
   const isBackDisabled = !activeTabId || !canGoBack(activeTabId);

@@ -57,6 +57,16 @@ export default {
           active: "hsl(var(--tab-active))",
           inactive: "hsl(var(--tab-inactive))",
         },
+        homepage: {
+          overlay: "hsl(var(--homepage-overlay))",
+          "tile-bg": "hsl(var(--homepage-tile-bg))",
+          "tile-text": "hsl(var(--homepage-tile-text))",
+          tagline: "hsl(var(--homepage-tagline))",
+        },
+      },
+      boxShadow: {
+        'homepage-tile': '0 4px 20px -4px rgba(236, 72, 153, 0.15), 0 2px 8px -2px rgba(0, 0, 0, 0.05)',
+        'homepage-tile-hover': '0 12px 40px -8px rgba(236, 72, 153, 0.25), 0 4px 16px -4px rgba(0, 0, 0, 0.08)',
       },
       borderRadius: {
         lg: "var(--radius)",

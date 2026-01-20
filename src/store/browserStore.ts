@@ -27,7 +27,9 @@ interface BrowserState {
 
 const generateId = () => Math.random().toString(36).substring(2, 9);
 
-const DEFAULT_URL = 'https://www.google.com';
+// Use internal homepage as default
+const DEFAULT_URL = 'kisscam://home';
+export const HOMEPAGE_URL = 'kisscam://home';
 
 export const useBrowserStore = create<BrowserState>()(
   persist(

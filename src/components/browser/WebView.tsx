@@ -1,16 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Globe, Lock, AlertTriangle } from 'lucide-react';
-import { useBrowserStore } from '@/store/browserStore';
+import { useBrowserStore, HOMEPAGE_URL } from '@/store/browserStore';
+import { HomePage } from './HomePage';
 
 export const WebView: React.FC = () => {
   const { activeTabId, tabs, updateTab } = useBrowserStore();
   const activeTab = tabs.find((tab) => tab.id === activeTabId);
   const [error, setError] = useState<string | null>(null);
 
+  // Check if we're on the homepage
+  const isHomePage = activeTab?.url === HOMEPAGE_URL;
+
   useEffect(() => {
     if (activeTab?.isLoading) {
       setError(null);
-      // Simulate page load
+      
+      // Handle homepage specially - no loading simulation needed
+      if (activeTab.url === HOMEPAGE_URL) {
+        updateTab(activeTab.id, { 
+          isLoading: false, 
+          title: 'KissCam Home' 
+        });
+        return;
+      }
+      
+      // Simulate page load for external URLs
       const timer = setTimeout(() => {
         try {
           const url = new URL(activeTab.url);
@@ -31,18 +45,14 @@ export const WebView: React.FC = () => {
     }
   }, [activeTab?.isLoading, activeTab?.url, activeTab?.id, updateTab]);
 
+  // No tab open - show homepage
   if (!activeTab) {
-    return (
-      <div className="flex-1 flex items-center justify-center bg-webview">
-        <div className="text-center">
-          <Globe className="w-16 h-16 mx-auto text-muted-foreground/30 mb-4" />
-          <p className="text-muted-foreground text-lg">No tab open</p>
-          <p className="text-muted-foreground/60 text-sm mt-1">
-            Click the + button to create a new tab
-          </p>
-        </div>
-      </div>
-    );
+    return <HomePage />;
+  }
+
+  // Show homepage for internal URL
+  if (isHomePage && !activeTab.isLoading) {
+    return <HomePage />;
   }
 
   if (activeTab.isLoading) {

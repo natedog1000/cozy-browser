@@ -47,12 +47,13 @@ const platforms: PlatformTile[] = [
     url: 'https://www.cam4.com/login',
     logo: cam4Logo,
   },
-  {
-    name: 'Twitch',
-    url: 'https://www.twitch.tv',
-    logo: twitchLogo,
-  },
 ];
+
+const twitchPlatform: PlatformTile = {
+  name: 'Twitch',
+  url: 'https://www.twitch.tv',
+  logo: twitchLogo,
+};
 
 export const HomePage: React.FC = () => {
   const { activeTabId, navigateTo, updateTab } = useBrowserStore();
@@ -95,10 +96,24 @@ export const HomePage: React.FC = () => {
               <img 
                 src={platform.logo} 
                 alt={platform.name}
-                className="max-w-full h-auto max-h-20 object-contain group-hover:scale-110 transition-transform duration-300"
+                className="max-w-full h-auto max-h-28 object-contain group-hover:scale-110 transition-transform duration-300"
               />
             </button>
           ))}
+        </div>
+
+        {/* Twitch centered below */}
+        <div className="flex justify-center w-full mt-2">
+          <button
+            onClick={() => handleTileClick(twitchPlatform.url, twitchPlatform.name)}
+            className="group flex items-center justify-center p-6 rounded-3xl hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg"
+          >
+            <img 
+              src={twitchPlatform.logo} 
+              alt={twitchPlatform.name}
+              className="max-w-full h-auto max-h-28 object-contain group-hover:scale-110 transition-transform duration-300"
+            />
+          </button>
         </div>
 
         {/* Subtle tagline */}

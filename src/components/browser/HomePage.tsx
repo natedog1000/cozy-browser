@@ -61,7 +61,7 @@ export const HomePage: React.FC = () => {
 
   return (
     <div 
-      className="flex-1 relative overflow-hidden"
+      className="flex-1 relative overflow-hidden min-h-0"
       style={{
         backgroundImage: `url(${heroBackground})`,
         backgroundSize: 'cover',
@@ -69,49 +69,52 @@ export const HomePage: React.FC = () => {
       }}
     >
       {/* Soft pink overlay for readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-homepage-overlay/40 via-homepage-overlay/20 to-homepage-overlay/50" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/50 via-pink-50/30 to-white/60" />
       
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-start h-full pt-12 px-8">
+      <div className="relative z-10 flex flex-col items-center justify-start h-full pt-8 px-8 overflow-auto">
         {/* Logo with glow effect */}
-        <div className="relative mb-10">
-          <div className="absolute inset-0 blur-2xl bg-white/60 rounded-full scale-125" />
+        <div className="relative mb-8 flex-shrink-0">
+          <div className="absolute inset-0 blur-3xl bg-white/80 rounded-full scale-150" />
           <img 
             src={kisscamLogo} 
             alt="KissCam" 
-            className="relative w-72 h-auto drop-shadow-2xl"
+            width={280}
+            height={140}
+            className="relative z-10 w-[280px] h-auto object-contain drop-shadow-2xl"
+            style={{ maxWidth: '280px' }}
           />
         </div>
 
         {/* Platform tiles grid */}
-        <div className="grid grid-cols-3 gap-5 max-w-3xl">
+        <div className="grid grid-cols-3 gap-4 max-w-3xl w-full">
           {platforms.map((platform) => (
             <button
               key={platform.name}
               onClick={() => handleTileClick(platform.url, platform.name)}
-              className="group relative flex flex-col items-center justify-center p-6 rounded-2xl bg-white/90 backdrop-blur-sm shadow-homepage-tile hover:shadow-homepage-tile-hover transition-all duration-300 hover:scale-105 hover:-translate-y-1 min-w-[180px]"
+              className="group relative flex flex-col items-center justify-center p-5 rounded-2xl bg-white/95 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 border border-pink-100/50"
             >
               {/* Subtle gradient border on hover */}
-              <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${platform.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-300`} />
+              <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${platform.gradient} opacity-0 group-hover:opacity-15 transition-opacity duration-300`} />
               
               {/* Icon */}
-              <span className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+              <span className="text-4xl mb-2 group-hover:scale-110 transition-transform duration-300">
                 {platform.icon}
               </span>
               
               {/* Platform name */}
-              <span className="text-homepage-tile-text font-semibold text-lg tracking-wide">
+              <span className="text-gray-700 font-semibold text-base tracking-wide">
                 {platform.name}
               </span>
               
               {/* Subtle pink accent line */}
-              <div className={`mt-3 w-12 h-1 rounded-full bg-gradient-to-r ${platform.gradient} opacity-60 group-hover:w-16 group-hover:opacity-100 transition-all duration-300`} />
+              <div className={`mt-2 w-10 h-1 rounded-full bg-gradient-to-r ${platform.gradient} opacity-50 group-hover:w-14 group-hover:opacity-100 transition-all duration-300`} />
             </button>
           ))}
         </div>
 
         {/* Subtle tagline */}
-        <p className="mt-10 text-homepage-tagline text-sm font-medium tracking-wider uppercase">
+        <p className="mt-8 text-pink-400/80 text-sm font-medium tracking-wider uppercase">
           Your streaming launchpad ✨
         </p>
       </div>

@@ -111,7 +111,7 @@ export const HomePage: React.FC = () => {
             <img 
               src={twitchPlatform.logo} 
               alt={twitchPlatform.name}
-              className="max-w-full h-auto max-h-36 object-contain group-hover:scale-110 transition-transform duration-300"
+              className="max-w-full h-auto max-h-28 object-contain group-hover:scale-110 transition-transform duration-300"
             />
           </button>
         </div>

@@ -86,12 +86,20 @@ export const HomePage: React.FC = () => {
         </div>
 
         {/* Platform tiles grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
+        <div 
+          className="justify-items-center"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 320px)',
+            gap: '24px',
+          }}
+        >
           {platforms.map((platform) => (
             <button
               key={platform.name}
               onClick={() => handleTileClick(platform.url, platform.name)}
-              className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg w-[260px] h-[140px] sm:w-[280px] sm:h-[150px] lg:w-[320px] lg:h-[180px] flex-shrink-0"
+              className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg flex-shrink-0"
+              style={{ width: '320px', height: '180px' }}
             >
               <img 
                 src={platform.logo} 
@@ -103,10 +111,11 @@ export const HomePage: React.FC = () => {
         </div>
 
         {/* Twitch centered below */}
-        <div className="flex justify-center w-full mt-2">
+        <div className="flex justify-center w-full" style={{ marginTop: '24px' }}>
           <button
             onClick={() => handleTileClick(twitchPlatform.url, twitchPlatform.name)}
-            className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg w-[260px] h-[140px] sm:w-[280px] sm:h-[150px] lg:w-[320px] lg:h-[180px] flex-shrink-0"
+            className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg flex-shrink-0"
+            style={{ width: '320px', height: '180px' }}
           >
             <img 
               src={twitchPlatform.logo} 

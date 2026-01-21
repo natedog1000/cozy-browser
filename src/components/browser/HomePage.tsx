@@ -86,12 +86,12 @@ export const HomePage: React.FC = () => {
         </div>
 
         {/* Platform tiles grid */}
-        <div className="grid grid-cols-3 gap-8 max-w-4xl w-full justify-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
           {platforms.map((platform) => (
             <button
               key={platform.name}
               onClick={() => handleTileClick(platform.url, platform.name)}
-              className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg"
+              className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg w-[280px] h-[160px] sm:w-[300px] sm:h-[170px] lg:w-[360px] lg:h-[200px] flex-shrink-0"
             >
               <img 
                 src={platform.logo} 
@@ -106,7 +106,7 @@ export const HomePage: React.FC = () => {
         <div className="flex justify-center w-full mt-2">
           <button
             onClick={() => handleTileClick(twitchPlatform.url, twitchPlatform.name)}
-            className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg w-[260px] h-[160px]"
+            className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg w-[280px] h-[160px] sm:w-[300px] sm:h-[170px] lg:w-[360px] lg:h-[200px] flex-shrink-0"
           >
             <img 
               src={twitchPlatform.logo} 

@@ -85,52 +85,26 @@ export const WebView: React.FC = () => {
     );
   }
 
-  // In a real Capacitor/Electron app, this would be an actual webview
-  // For demo purposes, we show a mock preview
-  const isSecure = activeTab.url.startsWith('https://');
-  let domain = 'unknown';
-  try {
-    domain = new URL(activeTab.url).hostname;
-  } catch {}
-
+  // Load actual websites in an iframe
   return (
     <div className="flex-1 flex flex-col bg-webview overflow-hidden">
-      {/* Security indicator bar */}
-      <div className="flex items-center gap-2 px-4 py-2 bg-muted/50 border-b border-border text-xs">
-        {isSecure ? (
-          <Lock className="w-3 h-3 text-green-600" />
-        ) : (
-          <AlertTriangle className="w-3 h-3 text-amber-500" />
-        )}
-        <span className={isSecure ? 'text-green-600' : 'text-amber-500'}>
-          {isSecure ? 'Secure connection' : 'Not secure'}
-        </span>
-        <span className="text-muted-foreground">•</span>
-        <span className="text-muted-foreground">{domain}</span>
-      </div>
-      
-      {/* Mock page content */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="text-center max-w-lg">
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mx-auto mb-6">
-            <Globe className="w-10 h-10 text-primary" />
-          </div>
-          <h2 className="text-2xl font-semibold text-foreground mb-2">
-            {domain}
-          </h2>
-          <p className="text-muted-foreground mb-6">
-            This is a browser simulation. In a real Capacitor desktop app, 
-            the actual webpage would be displayed here using a WebView component.
-          </p>
-          <div className="p-4 bg-muted/50 rounded-lg text-left">
-            <p className="text-sm text-muted-foreground">
-              <strong className="text-foreground">Current URL:</strong>
-              <br />
-              <code className="text-primary break-all">{activeTab.url}</code>
-            </p>
-          </div>
-        </div>
-      </div>
+      <iframe
+        src={activeTab.url}
+        className="w-full h-full border-0"
+        title={activeTab.title || 'Web page'}
+        sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-downloads"
+        referrerPolicy="no-referrer-when-downgrade"
+        onLoad={() => {
+          // Update tab title based on URL if we can't access the iframe's document
+          try {
+            const url = new URL(activeTab.url);
+            updateTab(activeTab.id, { 
+              isLoading: false,
+              title: url.hostname.replace('www.', '')
+            });
+          } catch {}
+        }}
+      />
     </div>
   );
 };

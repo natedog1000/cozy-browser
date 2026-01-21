@@ -8,8 +8,7 @@ import stripchatLogo from '@/assets/stripchat-logo.png';
 import camsodaLogo from '@/assets/camsoda-logo.png';
 import cam4Logo from '@/assets/cam4-logo.png';
 import twitchLogo from '@/assets/twitch-logo.png';
-import { useBrowserStore } from '@/store/browserStore';
-import { isNativePlatform, openInNativeWebView } from '@/lib/nativeBrowser';
+
 
 interface PlatformTile {
   name: string;
@@ -57,20 +56,10 @@ const twitchPlatform: PlatformTile = {
 };
 
 export const HomePage: React.FC = () => {
-  const { activeTabId, navigateTo, updateTab } = useBrowserStore();
 
-  const handleTileClick = async (url: string, name: string) => {
-    // On native platform, open in native WebView
-    if (isNativePlatform()) {
-      await openInNativeWebView(url);
-      return;
-    }
-    
-    // On web, navigate within the app (will show web-only message)
-    if (activeTabId) {
-      navigateTo(activeTabId, url);
-      updateTab(activeTabId, { title: name });
-    }
+  const handleTileClick = (url: string) => {
+    // Open external sites in a new browser tab
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -107,7 +96,7 @@ export const HomePage: React.FC = () => {
           {platforms.map((platform) => (
             <button
               key={platform.name}
-              onClick={() => handleTileClick(platform.url, platform.name)}
+              onClick={() => handleTileClick(platform.url)}
               className="group flex items-center justify-center rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg w-full aspect-[16/9]"
             >
               <img 
@@ -128,7 +117,7 @@ export const HomePage: React.FC = () => {
           }}
         >
           <button
-            onClick={() => handleTileClick(twitchPlatform.url, twitchPlatform.name)}
+            onClick={() => handleTileClick(twitchPlatform.url)}
             className="group flex items-center justify-center rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg aspect-[16/9]"
             style={{ width: 'calc((min(1080px, 90vw) - clamp(24px, 3vw, 48px)) / 3)' }}
           >

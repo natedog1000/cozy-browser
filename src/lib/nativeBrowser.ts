@@ -1,11 +1,10 @@
-import { InAppBrowser } from '@capgo/inappbrowser';
-import { Capacitor } from '@capacitor/core';
-
 /**
  * Check if running on a native platform (iOS/Android)
+ * Uses dynamic import to avoid React context issues
  */
 export const isNativePlatform = (): boolean => {
-  return Capacitor.isNativePlatform();
+  // Check for Capacitor's native bridge
+  return !!(window as any).Capacitor?.isNativePlatform?.();
 };
 
 /**
@@ -33,12 +32,14 @@ export const isExternalUrl = (url: string): boolean => {
  * Returns true if opened successfully, false if not on native platform
  */
 export const openInNativeWebView = async (url: string): Promise<boolean> => {
-  if (!Capacitor.isNativePlatform()) {
+  if (!isNativePlatform()) {
     console.log('Not on native platform, cannot open native WebView');
     return false;
   }
 
   try {
+    // Dynamic import to avoid bundling issues with React
+    const { InAppBrowser } = await import('@capgo/inappbrowser');
     await InAppBrowser.open({ url });
     return true;
   } catch (error) {
@@ -51,8 +52,9 @@ export const openInNativeWebView = async (url: string): Promise<boolean> => {
  * Close the native WebView (if open)
  */
 export const closeNativeWebView = async (): Promise<void> => {
-  if (Capacitor.isNativePlatform()) {
+  if (isNativePlatform()) {
     try {
+      const { InAppBrowser } = await import('@capgo/inappbrowser');
       await InAppBrowser.close();
     } catch (error) {
       console.error('Failed to close native WebView:', error);

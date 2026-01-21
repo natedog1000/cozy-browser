@@ -91,12 +91,12 @@ export const HomePage: React.FC = () => {
             <button
               key={platform.name}
               onClick={() => handleTileClick(platform.url, platform.name)}
-              className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg w-[280px] h-[160px] sm:w-[300px] sm:h-[170px] lg:w-[360px] lg:h-[200px] flex-shrink-0"
+              className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg w-[260px] h-[140px] sm:w-[280px] sm:h-[150px] lg:w-[320px] lg:h-[180px] flex-shrink-0"
             >
               <img 
                 src={platform.logo} 
                 alt={platform.name}
-                className="max-w-full h-auto max-h-28 object-contain group-hover:scale-110 transition-transform duration-300"
+                className="max-w-full h-auto max-h-24 object-contain group-hover:scale-110 transition-transform duration-300"
               />
             </button>
           ))}
@@ -106,12 +106,12 @@ export const HomePage: React.FC = () => {
         <div className="flex justify-center w-full mt-2">
           <button
             onClick={() => handleTileClick(twitchPlatform.url, twitchPlatform.name)}
-            className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg w-[280px] h-[160px] sm:w-[300px] sm:h-[170px] lg:w-[360px] lg:h-[200px] flex-shrink-0"
+            className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg w-[260px] h-[140px] sm:w-[280px] sm:h-[150px] lg:w-[320px] lg:h-[180px] flex-shrink-0"
           >
             <img 
               src={twitchPlatform.logo} 
               alt={twitchPlatform.name}
-              className="max-w-full h-auto max-h-28 object-contain group-hover:scale-110 transition-transform duration-300"
+              className="max-w-full h-auto max-h-24 object-contain group-hover:scale-110 transition-transform duration-300"
             />
           </button>
         </div>

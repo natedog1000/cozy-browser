@@ -67,66 +67,73 @@ export const HomePage: React.FC = () => {
 
   return (
     <div 
-      className="flex-1 relative overflow-hidden min-h-0"
+      className="flex-1 relative min-h-0 h-full"
       style={{
         backgroundImage: `url(${heroBackground})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        overflow: 'hidden',
       }}
     >
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-start h-full pt-8 px-8 overflow-auto">
-        {/* KissCam Logo */}
-        <div className="mb-8 flex-shrink-0">
+      {/* Content - vertically centered, no scroll */}
+      <div className="relative z-10 flex flex-col items-center justify-center h-full px-4">
+        {/* KissCam Logo - scales with viewport */}
+        <div className="mb-[2vh] flex-shrink-0">
           <img 
             src={kisscamLogo} 
             alt="KissCam" 
-            className="w-[500px] h-auto object-contain"
+            className="h-[10vh] w-auto object-contain"
           />
         </div>
 
-        {/* Platform tiles grid */}
+        {/* Platform tiles grid - responsive sizing */}
         <div 
           className="justify-items-center"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 320px)',
-            gap: '24px',
+            gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+            gap: 'clamp(12px, 1.5vw, 24px)',
+            width: 'min(1080px, 90vw)',
           }}
         >
           {platforms.map((platform) => (
             <button
               key={platform.name}
               onClick={() => handleTileClick(platform.url, platform.name)}
-              className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg flex-shrink-0"
-              style={{ width: '320px', height: '180px' }}
+              className="group flex items-center justify-center rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg w-full aspect-[16/9]"
             >
               <img 
                 src={platform.logo} 
                 alt={platform.name}
-                className="max-w-full h-auto max-h-24 object-contain group-hover:scale-110 transition-transform duration-300"
+                className="max-w-[80%] max-h-[60%] object-contain group-hover:scale-110 transition-transform duration-300"
               />
             </button>
           ))}
         </div>
 
         {/* Twitch centered below */}
-        <div className="flex justify-center w-full" style={{ marginTop: '24px' }}>
+        <div 
+          className="flex justify-center"
+          style={{ 
+            marginTop: 'clamp(12px, 1.5vw, 24px)',
+            width: 'min(1080px, 90vw)',
+          }}
+        >
           <button
             onClick={() => handleTileClick(twitchPlatform.url, twitchPlatform.name)}
-            className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg flex-shrink-0"
-            style={{ width: '320px', height: '180px' }}
+            className="group flex items-center justify-center rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg aspect-[16/9]"
+            style={{ width: 'calc((min(1080px, 90vw) - clamp(24px, 3vw, 48px)) / 3)' }}
           >
             <img 
               src={twitchPlatform.logo} 
               alt={twitchPlatform.name}
-              className="max-w-full h-auto max-h-24 object-contain group-hover:scale-110 transition-transform duration-300"
+              className="max-w-[80%] max-h-[60%] object-contain group-hover:scale-110 transition-transform duration-300"
             />
           </button>
         </div>
 
         {/* Subtle tagline */}
-        <p className="mt-8 text-pink-600/80 text-sm font-medium tracking-wider uppercase">
+        <p className="mt-[1.5vh] text-pink-600/80 text-sm font-medium tracking-wider uppercase">
           Your streaming launchpad ✨
         </p>
       </div>

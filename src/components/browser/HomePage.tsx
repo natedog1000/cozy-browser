@@ -81,7 +81,7 @@ export const HomePage: React.FC = () => {
           <img 
             src={kisscamLogo} 
             alt="KissCam" 
-            className="w-[400px] h-auto object-contain"
+            className="w-[500px] h-auto object-contain"
           />
         </div>
 

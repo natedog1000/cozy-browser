@@ -1,18 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { AlertTriangle } from 'lucide-react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { AlertTriangle, ExternalLink } from 'lucide-react';
 import { useBrowserStore, HOMEPAGE_URL } from '@/store/browserStore';
 import { HomePage } from './HomePage';
-import { openInNativeBrowser, isExternalUrl } from '@/lib/nativeBrowser';
+import { isExternalUrl } from '@/lib/nativeBrowser';
 
 export const WebView: React.FC = () => {
-  const { activeTabId, tabs, updateTab } = useBrowserStore();
+  const { activeTabId, tabs, updateTab, navigateTo } = useBrowserStore();
   const activeTab = tabs.find((tab) => tab.id === activeTabId);
   const [error, setError] = useState<string | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // Check if we're on the homepage - handle both with and without protocol
   const isHomePage = activeTab?.url === HOMEPAGE_URL || 
                      activeTab?.url === 'kisscam://home' ||
                      activeTab?.url?.startsWith('kisscam://');
+
+  // Handle iframe load events
+  const handleIframeLoad = useCallback(() => {
+    if (!activeTab) return;
+    
+    try {
+      const url = new URL(activeTab.url);
+      updateTab(activeTab.id, { 
+        isLoading: false,
+        title: url.hostname.replace('www.', '')
+      });
+    } catch {
+      updateTab(activeTab.id, { isLoading: false });
+    }
+  }, [activeTab?.id, activeTab?.url, updateTab]);
+
+  // Handle iframe errors
+  const handleIframeError = useCallback(() => {
+    if (activeTab) {
+      setError('Unable to load this page. The site may block embedding.');
+      updateTab(activeTab.id, { isLoading: false });
+    }
+  }, [activeTab?.id, updateTab]);
 
   useEffect(() => {
     if (activeTab?.isLoading) {
@@ -27,22 +51,24 @@ export const WebView: React.FC = () => {
         return;
       }
       
-      // Simulate page load for external URLs
+      // Set a timeout for loading external URLs
       const timer = setTimeout(() => {
-        try {
-          const url = new URL(activeTab.url);
-          updateTab(activeTab.id, { 
-            isLoading: false, 
-            title: url.hostname.replace('www.', '') 
-          });
-        } catch {
-          updateTab(activeTab.id, { 
-            isLoading: false, 
-            title: 'Invalid URL' 
-          });
-          setError('Unable to load this page');
+        if (activeTab.isLoading) {
+          try {
+            const url = new URL(activeTab.url);
+            updateTab(activeTab.id, { 
+              isLoading: false, 
+              title: url.hostname.replace('www.', '') 
+            });
+          } catch {
+            updateTab(activeTab.id, { 
+              isLoading: false, 
+              title: 'Invalid URL' 
+            });
+            setError('Unable to load this page');
+          }
         }
-      }, 800);
+      }, 3000);
       
       return () => clearTimeout(timer);
     }
@@ -75,44 +101,37 @@ export const WebView: React.FC = () => {
   if (error) {
     return (
       <div className="flex-1 flex items-center justify-center bg-webview">
-        <div className="text-center">
+        <div className="text-center max-w-md px-4">
           <AlertTriangle className="w-16 h-16 mx-auto text-destructive/60 mb-4" />
           <p className="text-foreground text-lg font-medium">{error}</p>
-          <p className="text-muted-foreground text-sm mt-2 max-w-md">
-            Please check the URL and try again.
+          <p className="text-muted-foreground text-sm mt-2">
+            Some websites prevent embedding for security reasons.
           </p>
-        </div>
-      </div>
-    );
-  }
-
-  // For external URLs, open in native browser and show a message
-  useEffect(() => {
-    if (activeTab && !activeTab.isLoading && isExternalUrl(activeTab.url)) {
-      openInNativeBrowser(activeTab.url);
-    }
-  }, [activeTab?.url, activeTab?.isLoading]);
-
-  // Show message for external URLs (they open in native browser)
-  if (activeTab && isExternalUrl(activeTab.url) && !activeTab.isLoading) {
-    return (
-      <div className="flex-1 flex items-center justify-center bg-webview">
-        <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-            <AlertTriangle className="w-8 h-8 text-primary" />
+          <div className="mt-4 p-3 bg-muted/50 rounded-lg">
+            <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
+              <ExternalLink className="w-3 h-3" />
+              {activeTab.url}
+            </p>
           </div>
-          <p className="text-foreground text-lg font-medium">Opening in browser...</p>
-          <p className="text-muted-foreground text-sm mt-2 max-w-md">
-            {activeTab.url}
-          </p>
-          <p className="text-muted-foreground/60 text-xs mt-4">
-            External sites open in the native browser for full functionality.
-          </p>
         </div>
       </div>
     );
   }
 
-  // Fallback - shouldn't reach here for normal flow
-  return <HomePage />;
+  // Load external websites in an iframe within the app
+  return (
+    <div className="flex-1 flex flex-col bg-webview overflow-hidden">
+      <iframe
+        ref={iframeRef}
+        src={activeTab.url}
+        className="w-full h-full border-0"
+        title={activeTab.title || 'Web page'}
+        sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-downloads allow-popups-to-escape-sandbox"
+        referrerPolicy="no-referrer-when-downgrade"
+        allow="camera; microphone; geolocation; payment; autoplay; fullscreen"
+        onLoad={handleIframeLoad}
+        onError={handleIframeError}
+      />
+    </div>
+  );
 };

@@ -8,7 +8,7 @@ import stripchatLogo from '@/assets/stripchat-logo.png';
 import camsodaLogo from '@/assets/camsoda-logo.png';
 import cam4Logo from '@/assets/cam4-logo.png';
 import twitchLogo from '@/assets/twitch-logo.png';
-
+import { openInNativeBrowser } from '@/lib/nativeBrowser';
 
 interface PlatformTile {
   name: string;
@@ -58,8 +58,8 @@ const twitchPlatform: PlatformTile = {
 export const HomePage: React.FC = () => {
 
   const handleTileClick = (url: string) => {
-    // Open external sites in a new browser tab
-    window.open(url, '_blank', 'noopener,noreferrer');
+    // Open external sites in native WebView (on native) or new tab (on web)
+    openInNativeBrowser(url);
   };
 
   return (

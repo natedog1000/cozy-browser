@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Globe, Lock, AlertTriangle } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import { useBrowserStore, HOMEPAGE_URL } from '@/store/browserStore';
 import { HomePage } from './HomePage';
+import { openInNativeBrowser, isExternalUrl } from '@/lib/nativeBrowser';
 
 export const WebView: React.FC = () => {
   const { activeTabId, tabs, updateTab } = useBrowserStore();
@@ -85,26 +86,33 @@ export const WebView: React.FC = () => {
     );
   }
 
-  // Load actual websites in an iframe
-  return (
-    <div className="flex-1 flex flex-col bg-webview overflow-hidden">
-      <iframe
-        src={activeTab.url}
-        className="w-full h-full border-0"
-        title={activeTab.title || 'Web page'}
-        sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-downloads"
-        referrerPolicy="no-referrer-when-downgrade"
-        onLoad={() => {
-          // Update tab title based on URL if we can't access the iframe's document
-          try {
-            const url = new URL(activeTab.url);
-            updateTab(activeTab.id, { 
-              isLoading: false,
-              title: url.hostname.replace('www.', '')
-            });
-          } catch {}
-        }}
-      />
-    </div>
-  );
+  // For external URLs, open in native browser and show a message
+  useEffect(() => {
+    if (activeTab && !activeTab.isLoading && isExternalUrl(activeTab.url)) {
+      openInNativeBrowser(activeTab.url);
+    }
+  }, [activeTab?.url, activeTab?.isLoading]);
+
+  // Show message for external URLs (they open in native browser)
+  if (activeTab && isExternalUrl(activeTab.url) && !activeTab.isLoading) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-webview">
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+            <AlertTriangle className="w-8 h-8 text-primary" />
+          </div>
+          <p className="text-foreground text-lg font-medium">Opening in browser...</p>
+          <p className="text-muted-foreground text-sm mt-2 max-w-md">
+            {activeTab.url}
+          </p>
+          <p className="text-muted-foreground/60 text-xs mt-4">
+            External sites open in the native browser for full functionality.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Fallback - shouldn't reach here for normal flow
+  return <HomePage />;
 };

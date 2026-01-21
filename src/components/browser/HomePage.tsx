@@ -77,23 +77,23 @@ export const HomePage: React.FC = () => {
     >
       {/* Content - vertically centered, no scroll */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full px-4">
-        {/* KissCam Logo - ~35% larger, scales with viewport */}
-        <div className="mb-[2.5vh] flex-shrink-0">
+        {/* KissCam Logo - scales with viewport */}
+        <div className="mb-[2vh] flex-shrink-0">
           <img 
             src={kisscamLogo} 
             alt="KissCam" 
-            className="h-[14vh] w-auto object-contain"
+            className="h-[10vh] w-auto object-contain"
           />
         </div>
 
-        {/* Platform tiles grid - ~12% smaller */}
+        {/* Platform tiles grid - responsive sizing */}
         <div 
           className="justify-items-center"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-            gap: 'clamp(10px, 1.2vw, 20px)',
-            width: 'min(950px, 80vw)',
+            gap: 'clamp(12px, 1.5vw, 24px)',
+            width: 'min(1080px, 90vw)',
           }}
         >
           {platforms.map((platform) => (
@@ -115,14 +115,14 @@ export const HomePage: React.FC = () => {
         <div 
           className="flex justify-center"
           style={{ 
-            marginTop: 'clamp(10px, 1.2vw, 20px)',
-            width: 'min(950px, 80vw)',
+            marginTop: 'clamp(12px, 1.5vw, 24px)',
+            width: 'min(1080px, 90vw)',
           }}
         >
           <button
             onClick={() => handleTileClick(twitchPlatform.url, twitchPlatform.name)}
             className="group flex items-center justify-center rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg aspect-[16/9]"
-            style={{ width: 'calc((min(950px, 80vw) - clamp(20px, 2.4vw, 40px)) / 3)' }}
+            style={{ width: 'calc((min(1080px, 90vw) - clamp(24px, 3vw, 48px)) / 3)' }}
           >
             <img 
               src={twitchPlatform.logo} 

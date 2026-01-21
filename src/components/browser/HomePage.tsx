@@ -106,7 +106,7 @@ export const HomePage: React.FC = () => {
         <div className="flex justify-center w-full mt-2">
           <button
             onClick={() => handleTileClick(twitchPlatform.url, twitchPlatform.name)}
-            className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg"
+            className="group flex items-center justify-center p-6 rounded-3xl bg-white/65 backdrop-blur-sm hover:scale-105 transition-all duration-300 drop-shadow-md hover:drop-shadow-lg w-[280px]"
           >
             <img 
               src={twitchPlatform.logo} 

@@ -9,6 +9,7 @@ import camsodaLogo from '@/assets/camsoda-logo.png';
 import cam4Logo from '@/assets/cam4-logo.png';
 import twitchLogo from '@/assets/twitch-logo.png';
 import { useBrowserStore } from '@/store/browserStore';
+import { isNativePlatform, openInNativeWebView } from '@/lib/nativeBrowser';
 
 interface PlatformTile {
   name: string;
@@ -58,9 +59,15 @@ const twitchPlatform: PlatformTile = {
 export const HomePage: React.FC = () => {
   const { activeTabId, navigateTo, updateTab } = useBrowserStore();
 
-  const handleTileClick = (url: string, name: string) => {
+  const handleTileClick = async (url: string, name: string) => {
+    // On native platform, open in native WebView
+    if (isNativePlatform()) {
+      await openInNativeWebView(url);
+      return;
+    }
+    
+    // On web, navigate within the app (will show web-only message)
     if (activeTabId) {
-      // Navigate within the in-app browser (same WebView)
       navigateTo(activeTabId, url);
       updateTab(activeTabId, { title: name });
     }

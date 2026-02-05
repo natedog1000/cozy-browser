@@ -1,55 +1,61 @@
 
-# Alternative Options Without GitHub
+# Fix: Make KissCam a Standalone App
 
-## The Challenge
+## The Problem
+The app currently tries to load from Lovable's website (which requires login) instead of running as a standalone app.
 
-To create a native desktop app (like Play GFS), the code needs to be compiled using developer tools (Xcode for Mac, Android Studio for Windows). These tools require the source code files on your local computer.
+## What I'll Change
 
-## Your Options
+### File: `capacitor.config.ts`
+Remove the `server` section that points to Lovable's URL:
 
-### Option 1: Download Project as ZIP (Simplest)
+```typescript
+import type { CapacitorConfig } from '@capacitor/cli';
 
-Instead of using GitHub, you can download your project files directly:
+const config: CapacitorConfig = {
+  appId: 'app.lovable.kisscam',
+  appName: 'KissCam',
+  webDir: 'dist',
+  plugins: {
+    Browser: {
+      // Configure browser plugin for external site loading
+    },
+  },
+};
 
-1. In Lovable, click **Settings** (gear icon) → **Export**
-2. Download the project as a ZIP file
-3. Unzip on your Mac
-4. Run the same build commands
+export default config;
+```
 
-This gives you the same result without needing a GitHub account.
+---
 
-### Option 2: Use the Web Version (Easiest - No Build Required)
+## After I Make This Change
 
-The app currently works as a web app at your published URL. When users click on streaming platforms, they open in a new browser tab. 
+Run these commands on your computer (in Terminal, inside the project folder):
 
-**Limitation**: This works well, but users won't have a branded app icon in their dock.
+```bash
+git pull
+npm run build
+npx cap sync
+npx cap open ios
+```
 
-### Option 3: Install as PWA (Middle Ground)
+---
 
-You can install the current web app to your dock/desktop:
+## Then in Xcode (Step-by-Step)
 
-1. Open **kisscam.lovable.app** in Safari or Chrome
-2. **Safari**: File → Add to Dock
-3. **Chrome**: Menu → Install KissCam...
+1. **Left sidebar**: Click on **"App"** (the blue app icon at the top)
+2. **Main area**: Click the **"Signing & Capabilities"** tab
+3. **Team dropdown**: Select your Apple ID (add one in Xcode → Settings → Accounts if needed)
+4. **Bundle Identifier**: Change to something unique like `com.yourname.kisscam`
+5. **Top menu**: Click **Product → Destination → My Mac**
+6. **Top menu**: Click **Product → Archive** (wait for it to build)
+7. **When Archive window opens**: Click **Distribute App → Copy App**
+8. **Choose a folder**: This saves your final `KissCam.app` file
 
-This creates an app icon, but streaming sites still open in your default browser (which is actually what you want for admin access).
+That `.app` file is what you share with models - they just double-click to install!
 
-## My Recommendation
+---
 
-**For your use case**, Option 3 (PWA) might actually be perfect:
-- Users get a KissCam app icon on their dock
-- When they click a streaming platform, it opens in their regular browser
-- You can still access their browser remotely for stream key setup
-- No complex build process required
+## About AI Controlling Xcode
 
-## Technical Note
-
-The full Capacitor native app build (Option 1) is mainly needed if you want:
-- Tabs to open INSIDE the KissCam app itself
-- Complete browser isolation from Safari/Chrome
-
-If opening streaming sites in the regular browser works for your admin access needs, the PWA approach is much simpler.
-
-## What I Can Do Next
-
-I can set up proper PWA support (install prompts, app icons, offline capability) so users can easily install KissCam to their dock without any build process. Would you like me to do that instead?
+Unfortunately, AI assistants (including ChatGPT and me) cannot control software on your computer. We can only provide instructions that you follow manually. There's no way for us to click buttons, type in Xcode, or run commands for you.

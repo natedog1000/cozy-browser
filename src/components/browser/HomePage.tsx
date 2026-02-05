@@ -169,7 +169,7 @@ export const HomePage: React.FC = () => {
                 Download for Mac
               </a>
               <a
-                href="https://github.com/natedog1000/cozy-browser/releases/latest/download/KissCam-win.exe"
+                href="https://github.com/natedog1000/cozy-browser/releases/latest/download/KissCam-win.zip"
                 className="flex items-center gap-2 px-5 py-2.5 bg-pink-500 hover:bg-pink-600 text-white rounded-full font-medium text-sm transition-all duration-300 hover:scale-105 shadow-lg"
               >
                 <Monitor className="w-4 h-4" />

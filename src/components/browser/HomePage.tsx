@@ -1,4 +1,5 @@
 import React from 'react';
+import { Download, Apple, Monitor } from 'lucide-react';
 import kisscamLogo from '@/assets/kisscam-logo.png';
 import heroBackground from '@/assets/hero-background.png';
 import chaturbateLogo from '@/assets/chaturbate-logo.png';
@@ -8,6 +9,7 @@ import stripchatLogo from '@/assets/stripchat-logo.png';
 import camsodaLogo from '@/assets/camsoda-logo.png';
 import cam4Logo from '@/assets/cam4-logo.png';
 import twitchLogo from '@/assets/twitch-logo.png';
+import { useBrowserStore } from '@/store/browserStore';
 
 
 interface PlatformTile {
@@ -56,20 +58,28 @@ const twitchPlatform: PlatformTile = {
 };
 
 export const HomePage: React.FC = () => {
+  const { addTab } = useBrowserStore();
 
-   const handleTileClick = async (url: string) => {
-     // Check if running as native app and use Capacitor Browser
-     try {
-       const { Capacitor } = await import('@capacitor/core');
-       if (Capacitor.isNativePlatform()) {
-         const { Browser } = await import('@capacitor/browser');
-         await Browser.open({ url });
-         return;
-       }
-     } catch {
-       // Capacitor not available, fall through to window.open
-     }
-     window.open(url, '_blank', 'noopener,noreferrer');
+  const handleTileClick = async (url: string) => {
+    // Check if running in Electron
+    if (window.electronAPI?.isElectron) {
+      // Open in a new tab within the app
+      addTab(url);
+      return;
+    }
+
+    // Check if running as native app and use Capacitor Browser
+    try {
+      const { Capacitor } = await import('@capacitor/core');
+      if (Capacitor.isNativePlatform()) {
+        const { Browser } = await import('@capacitor/browser');
+        await Browser.open({ url });
+        return;
+      }
+    } catch {
+      // Capacitor not available, fall through to window.open
+    }
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -143,6 +153,31 @@ export const HomePage: React.FC = () => {
         <p className="mt-[1.5vh] text-pink-600/80 text-sm font-medium tracking-wider uppercase">
           Your streaming launchpad ✨
         </p>
+
+        {/* Download buttons - only show when NOT in Electron */}
+        {!window.electronAPI?.isElectron && (
+          <div className="mt-[3vh] flex flex-col items-center gap-3">
+            <p className="text-pink-700/90 text-sm font-medium">
+              Download the KissCam Desktop App
+            </p>
+            <div className="flex gap-3">
+              <a
+                href="https://github.com/natedog1000/cozy-browser/releases/latest/download/KissCam-mac.zip"
+                className="flex items-center gap-2 px-5 py-2.5 bg-pink-500 hover:bg-pink-600 text-white rounded-full font-medium text-sm transition-all duration-300 hover:scale-105 shadow-lg"
+              >
+                <Apple className="w-4 h-4" />
+                Download for Mac
+              </a>
+              <a
+                href="https://github.com/natedog1000/cozy-browser/releases/latest/download/KissCam-win.exe"
+                className="flex items-center gap-2 px-5 py-2.5 bg-pink-500 hover:bg-pink-600 text-white rounded-full font-medium text-sm transition-all duration-300 hover:scale-105 shadow-lg"
+              >
+                <Monitor className="w-4 h-4" />
+                Download for Windows
+              </a>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

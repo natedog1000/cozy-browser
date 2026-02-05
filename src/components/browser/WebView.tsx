@@ -116,26 +116,40 @@ export const WebView: React.FC = () => {
     );
   }
 
-  // Load actual websites in an iframe
+  // Check if running in Electron - use webview tag for better compatibility
+  const isElectron = window.electronAPI?.isElectron;
+
+  // Load actual websites in webview (Electron) or iframe (web)
   return (
     <div className="flex-1 flex flex-col bg-webview overflow-hidden">
-      <iframe
-        src={activeTab.url}
-        className="w-full h-full border-0"
-        title={activeTab.title || 'Web page'}
-        sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-downloads"
-        referrerPolicy="no-referrer-when-downgrade"
-        onLoad={() => {
-          // Update tab title based on URL if we can't access the iframe's document
-          try {
-            const url = new URL(activeTab.url);
-            updateTab(activeTab.id, { 
-              isLoading: false,
-              title: url.hostname.replace('www.', '')
-            });
-          } catch {}
-        }}
-      />
+      {isElectron ? (
+        <webview
+          src={activeTab.url}
+          className="w-full h-full border-0"
+          // @ts-ignore - webview is an Electron-specific element
+          allowpopups="true"
+          // @ts-ignore
+          webpreferences="contextIsolation=yes"
+        />
+      ) : (
+        <iframe
+          src={activeTab.url}
+          className="w-full h-full border-0"
+          title={activeTab.title || 'Web page'}
+          sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-downloads"
+          referrerPolicy="no-referrer-when-downgrade"
+          onLoad={() => {
+            // Update tab title based on URL if we can't access the iframe's document
+            try {
+              const url = new URL(activeTab.url);
+              updateTab(activeTab.id, {
+                isLoading: false,
+                title: url.hostname.replace('www.', '')
+              });
+            } catch {}
+          }}
+        />
+      )}
     </div>
   );
 };

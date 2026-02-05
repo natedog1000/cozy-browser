@@ -1,42 +1,44 @@
 
-
 # Fix Package.json for Electron Build
 
-## What's Wrong Now
-The `electron-builder` is failing because:
-1. Missing `description` field
-2. Missing `author` field  
-3. Missing `main` entry point
-4. `electron` and `electron-builder` are in wrong place (should be devDependencies)
+## The Problem
+Your screenshot shows these errors:
+- `description is missed in the package.json`
+- `author is missed in the package.json`
+- `Package "electron" is only allowed in "devDependencies"`
+- `Package "electron-builder" is only allowed in "devDependencies"`
+- `Missing script: "electron:build:mac"`
 
-## What I'll Fix
+## What I'll Change
 
-I'll update `package.json` to add all required fields and move packages to the correct location.
+### 1. Add Required Metadata Fields
+```json
+"name": "kisscam",
+"description": "KissCam - Desktop browser app for streaming platforms",
+"author": "KissCam",
+"main": "electron/main.js",
+```
 
-### Changes:
-1. **Add metadata fields:**
-   - `"name": "kisscam"`
-   - `"description": "KissCam - Desktop browser app for streaming platforms"`
-   - `"author": "KissCam"`
-   - `"main": "electron/main.js"`
+### 2. Add Electron Build Scripts
+```json
+"electron:dev": "ELECTRON_DEV=true electron .",
+"electron:build:mac": "npm run build && electron-builder --mac",
+"electron:build:win": "npm run build && electron-builder --win"
+```
 
-2. **Move to devDependencies:**
-   - `electron`
-   - `electron-builder`
+### 3. Move Packages to devDependencies
+Move `electron` and `electron-builder` from `dependencies` to `devDependencies`
 
-3. **Add build scripts:**
-   - `"electron:dev": "ELECTRON_DEV=true electron ."`
-   - `"electron:build:mac": "npm run build && electron-builder --mac"`
-   - `"electron:build:win": "npm run build && electron-builder --win"`
+## After These Changes
 
-## After I Make These Changes
-
-You'll just run in Terminal:
+Run these commands in Terminal:
 ```bash
 git pull
 npm install
 npm run electron:build:mac
 ```
 
-Then look in `dist-electron/` for your `.zip` file. That's it!
+Then look in `dist-electron/` for your `.zip` file - that's what you upload to your website!
 
+## Files to Modify
+- `package.json` - Add metadata, scripts, and fix dependency placement

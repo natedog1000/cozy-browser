@@ -1,5 +1,8 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "kisscam",
+  "description": "KissCam - Desktop browser app for streaming platforms",
+  "author": "KissCam",
+  "main": "electron/main.cjs",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,7 +13,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "electron:dev": "ELECTRON_DEV=true electron .",
+    "electron:build:mac": "npm run build && electron-builder --mac",
+    "electron:build:win": "npm run build && electron-builder --win"
   },
   "dependencies": {
     "@capacitor/android": "^8.0.2",
@@ -51,8 +57,6 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^3.6.0",
-    "electron": "^40.1.0",
-    "electron-builder": "^26.7.0",
     "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.462.0",
@@ -81,6 +85,8 @@
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react-swc": "^3.11.0",
     "autoprefixer": "^10.4.21",
+    "electron": "^40.1.0",
+    "electron-builder": "^26.7.0",
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",

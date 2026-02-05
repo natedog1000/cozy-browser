@@ -6,8 +6,14 @@ import { cn } from '@/lib/utils';
 export const TabBar: React.FC = () => {
   const { tabs, activeTabId, addTab, closeTab, setActiveTab } = useBrowserStore();
 
+  // Check if running in Electron on macOS - need space for traffic lights
+  const isElectronMac = window.electronAPI?.isElectron && window.electronAPI?.platform === 'darwin';
+
   return (
-    <div className="flex items-center gap-1 px-2 py-1.5 bg-toolbar border-b border-border overflow-x-auto">
+    <div
+      className="flex items-center gap-1 px-2 py-1.5 bg-toolbar border-b border-border overflow-x-auto"
+      style={{ paddingLeft: isElectronMac ? '80px' : undefined }}
+    >
       <div className="flex items-center gap-1 flex-1 min-w-0">
         {tabs.map((tab) => (
           <button

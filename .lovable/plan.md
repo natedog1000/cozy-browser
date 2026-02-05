@@ -2,51 +2,41 @@
 
 # Fix Package.json for Electron Build
 
-## Problem
-Your terminal shows these errors from `electron-builder`:
-- `description is missed in the package.json`
-- `author is missed in the package.json`
-- `Package "electron" is only allowed in "devDependencies"`
-- `Package "electron-builder" is only allowed in "devDependencies"`
+## What's Wrong Now
+The `electron-builder` is failing because:
+1. Missing `description` field
+2. Missing `author` field  
+3. Missing `main` entry point
+4. `electron` and `electron-builder` are in wrong place (should be devDependencies)
 
 ## What I'll Fix
 
-### 1. Add Missing Fields
-Add these required fields to `package.json`:
-- `"name": "kisscam"` (change from generic name)
-- `"description": "KissCam - Desktop browser app for streaming platforms"`
-- `"author": "KissCam"`
-- `"main": "electron/main.js"` (Electron entry point)
+I'll update `package.json` to add all required fields and move packages to the correct location.
 
-### 2. Move Electron Packages
-Move from `dependencies` to `devDependencies`:
-- `electron`
-- `electron-builder`
+### Changes:
+1. **Add metadata fields:**
+   - `"name": "kisscam"`
+   - `"description": "KissCam - Desktop browser app for streaming platforms"`
+   - `"author": "KissCam"`
+   - `"main": "electron/main.js"`
 
-### 3. Add Build Scripts
-Add these scripts to `package.json`:
-- `"electron:dev"` - Run Electron in development mode
-- `"electron:build:mac"` - Build Mac app with one command
-- `"electron:build:win"` - Build Windows app with one command
+2. **Move to devDependencies:**
+   - `electron`
+   - `electron-builder`
+
+3. **Add build scripts:**
+   - `"electron:dev": "ELECTRON_DEV=true electron ."`
+   - `"electron:build:mac": "npm run build && electron-builder --mac"`
+   - `"electron:build:win": "npm run build && electron-builder --win"`
 
 ## After I Make These Changes
 
-You'll run in Terminal:
+You'll just run in Terminal:
 ```bash
 git pull
 npm install
 npm run electron:build:mac
 ```
 
-Then look in `dist-electron/` for your `.zip` file.
-
-## Technical Details
-
-**File to modify:** `package.json`
-
-**Changes:**
-- Add `name`, `description`, `author`, `main` fields at the top level
-- Remove `electron` and `electron-builder` from `dependencies`
-- Add `electron` and `electron-builder` to `devDependencies`
-- Add Electron build scripts
+Then look in `dist-electron/` for your `.zip` file. That's it!
 

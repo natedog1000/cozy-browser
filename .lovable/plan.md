@@ -1,61 +1,83 @@
 
-# Fix: Make KissCam a Standalone App
+
+# Build KissCam as a Mac Desktop App
 
 ## The Problem
-The app currently tries to load from Lovable's website (which requires login) instead of running as a standalone app.
+Capacitor iOS creates iPhone apps, not Mac apps. To create a downloadable `.app` file that works like Chrome, we need to use **Electron**.
 
-## What I'll Change
+## What I'll Do
 
-### File: `capacitor.config.ts`
-Remove the `server` section that points to Lovable's URL:
+### 1. Install Electron Dependencies
+Add the following packages:
+- `electron` - The framework that wraps your web app as a desktop app
+- `electron-builder` - Tool to package and create the `.app` and `.zip` files
 
-```typescript
-import type { CapacitorConfig } from '@capacitor/cli';
+### 2. Create Electron Main File
+Create `electron/main.js` - This is the entry point that:
+- Creates a browser window
+- Loads your KissCam app inside it
+- Handles window close/minimize behavior
 
-const config: CapacitorConfig = {
-  appId: 'app.lovable.kisscam',
-  appName: 'KissCam',
-  webDir: 'dist',
-  plugins: {
-    Browser: {
-      // Configure browser plugin for external site loading
-    },
-  },
-};
+### 3. Create Electron Preload Script
+Create `electron/preload.js` - Security bridge between the app and system
 
-export default config;
+### 4. Update package.json
+Add these scripts:
+```json
+"electron:dev": "electron .",
+"electron:build": "npm run build && electron-builder"
 ```
 
----
+Add Electron builder configuration:
+```json
+"build": {
+  "appId": "app.kisscam",
+  "productName": "KissCam",
+  "mac": {
+    "target": ["zip"],
+    "icon": "public/favicon.png"
+  }
+}
+```
 
-## After I Make This Change
+### 5. Create Build Script
+Add a simple command that:
+1. Builds the web app (`npm run build`)
+2. Packages it as a Mac app
+3. Creates a `.zip` file ready for download
 
-Run these commands on your computer (in Terminal, inside the project folder):
+## After This Change
 
+You'll run:
 ```bash
 git pull
-npm run build
-npx cap sync
-npx cap open ios
+npm install
+npm run electron:build
 ```
 
----
+This creates: `dist-electron/KissCam.app` and `dist-electron/KissCam-mac.zip`
 
-## Then in Xcode (Step-by-Step)
+## For Your Website Download Button
 
-1. **Left sidebar**: Click on **"App"** (the blue app icon at the top)
-2. **Main area**: Click the **"Signing & Capabilities"** tab
-3. **Team dropdown**: Select your Apple ID (add one in Xcode → Settings → Accounts if needed)
-4. **Bundle Identifier**: Change to something unique like `com.yourname.kisscam`
-5. **Top menu**: Click **Product → Destination → My Mac**
-6. **Top menu**: Click **Product → Archive** (wait for it to build)
-7. **When Archive window opens**: Click **Distribute App → Copy App**
-8. **Choose a folder**: This saves your final `KissCam.app` file
+Upload the `.zip` file to your hosting (or use a service like GitHub Releases), then link to it:
+```html
+<a href="/downloads/KissCam-mac.zip" download>Download KissCam for Mac</a>
+```
 
-That `.app` file is what you share with models - they just double-click to install!
+## Technical Details
 
----
+**Files to create:**
+- `electron/main.js` - Main process (creates window, loads app)
+- `electron/preload.js` - Security preload script
 
-## About AI Controlling Xcode
+**Files to modify:**
+- `package.json` - Add electron dependencies and build config
 
-Unfortunately, AI assistants (including ChatGPT and me) cannot control software on your computer. We can only provide instructions that you follow manually. There's no way for us to click buttons, type in Xcode, or run commands for you.
+**New dependencies:**
+- `electron` (dev dependency)
+- `electron-builder` (dev dependency)
+
+**Build output:**
+- `dist-electron/KissCam.app` - The Mac application
+- `dist-electron/KissCam-mac.zip` - Zipped version for download
+

@@ -1,4 +1,6 @@
 import React from 'react';
+ import { Capacitor } from '@capacitor/core';
+ import { Browser } from '@capacitor/browser';
 import kisscamLogo from '@/assets/kisscam-logo.png';
 import heroBackground from '@/assets/hero-background.png';
 import chaturbateLogo from '@/assets/chaturbate-logo.png';
@@ -57,9 +59,14 @@ const twitchPlatform: PlatformTile = {
 
 export const HomePage: React.FC = () => {
 
-  const handleTileClick = (url: string) => {
-    // Open external sites in a new browser tab
-    window.open(url, '_blank', 'noopener,noreferrer');
+   const handleTileClick = async (url: string) => {
+     // Use Capacitor's Browser API when running as native app
+     // Falls back to window.open for web preview
+     if (Capacitor.isNativePlatform()) {
+       await Browser.open({ url });
+     } else {
+       window.open(url, '_blank', 'noopener,noreferrer');
+     }
   };
 
   return (

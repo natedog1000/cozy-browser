@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Globe, Lock, AlertTriangle } from 'lucide-react';
+ import React, { useEffect, useState } from 'react';
+ import { AlertTriangle } from 'lucide-react';
+ import { Capacitor } from '@capacitor/core';
+ import { Browser } from '@capacitor/browser';
 import { useBrowserStore, HOMEPAGE_URL } from '@/store/browserStore';
 import { HomePage } from './HomePage';
 
@@ -7,6 +9,9 @@ export const WebView: React.FC = () => {
   const { activeTabId, tabs, updateTab } = useBrowserStore();
   const activeTab = tabs.find((tab) => tab.id === activeTabId);
   const [error, setError] = useState<string | null>(null);
+ 
+ // For native platforms, open external URLs in Capacitor Browser
+ const isNative = Capacitor.isNativePlatform();
 
   // Check if we're on the homepage - handle both with and without protocol
   const isHomePage = activeTab?.url === HOMEPAGE_URL || 
@@ -46,6 +51,18 @@ export const WebView: React.FC = () => {
       return () => clearTimeout(timer);
     }
   }, [activeTab?.isLoading, activeTab?.url, activeTab?.id, updateTab]);
+ 
+   // Open external URLs in native browser when on native platform
+   useEffect(() => {
+     if (isNative && activeTab && !activeTab.url.startsWith('kisscam://') && activeTab.url !== HOMEPAGE_URL) {
+       const openInNativeBrowser = async () => {
+         await Browser.open({ url: activeTab.url });
+         // After opening in native browser, navigate back to homepage
+         updateTab(activeTab.id, { url: HOMEPAGE_URL, title: 'KissCam Home', isLoading: false });
+       };
+       openInNativeBrowser();
+     }
+   }, [isNative, activeTab?.url, activeTab?.id, updateTab]);
 
   // No tab open - show homepage
   if (!activeTab) {
